@@ -1,0 +1,115 @@
+#!/bin/bash
+
+#---
+#title: "SNPstract_0.5"
+#author: "Urs Heilbronner"
+#date: "October 17th, 2017"
+#---
+#Version 0.4
+
+#set date variable
+now=$(date +"%Y-%m-%d")
+
+
+###CHECK NUMBER OF INPUT ARGUMENTS
+
+if [ $# = 2 ] ;		                          	#if there are two input arguments
+  
+    then SNPFILE=$1 GENFILE=$2; 			#first command line parameter is the SNP file, second command line parameter the PLINK file
+
+  elif [ $# = 0 ] ;                                  	#if there are zero input arguments
+
+    then	echo    "Type the name of the PLINK files, without extention, from which you want to extract the SNPs and press [ENTER]. If these are located in a different folder than the current one, include the full file path." 
+		
+		read GENFILE                    	#read in genotype filename from user input
+	
+		echo "Please provide a simple text file with the IDs of SNPs (rs....) you want to extract. This file must contain one SNP per line. Enter the full filename and press [ENTER]. If this file is located in a different folder than the current one, include the full file path."; 
+	
+		read SNPFILE                    	#read in snp filename from user input
+    else
+		echo    "Please provide either two (SNP file and name of PLINK files) or zero input arguments."; exit 1;
+fi
+
+
+###CHECK IF GENOTYPE FILES EXIST. 
+
+if [ -f ${GENFILE}.map ] && [ -f ${GENFILE}.ped ] ;
+    then echo "OK, ${GENFILE}.map and ${GENFILE}.ped files exist."
+  
+elif [ -f ${GENFILE}.bed ] && [ -f ${GENFILE}.bim ] && [ -f ${GENFILE}.fam ] ;
+    then echo "OK, ${GENFILE}.bed/.bim/.fam exist, recoding to non-binary files"
+  
+else  echo "ERROR, at least one of the genotype files (${GENFILE}[.bed/.bim/.fam]) does NOT exist. Did you specify the filename correctly?"; exit 1; 
+fi
+
+
+###CHECK IF SNPTYPE FILE EXISTS
+
+if [ -f $SNPFILE ];
+  then echo "OK, $SNPFILE exists"
+
+  else echo "$SNPFILE does not exist. Did you specify the filename correctly? No files were modified."; exit 1; 
+fi
+
+
+###EXTRACT SNPS, OPTIONALLY RECODE FILES FIRST
+
+if [ -f $GENFILE.map ] && [ -f $GENFILE.ped ];
+  then	echo "Extracting SNPs now..."
+        p-link --noweb --file $GENFILE --extract $SNPFILE --recode --out SNPstract_$(basename $SNPFILE)         #extract SNPs if .ped and .map file exist
+        mv SNPstract_$(basename $SNPFILE).log ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).EXTRACT.PLINK.log
+        
+elif [ -f $GENFILE.bed ] && [ -f $GENFILE.bim ] && [ -f $GENFILE.fam ];                                 
+  then	echo "Transforming binary into non-binary files, then extracting SNPs.."                        
+	p-link --noweb --bfile $GENFILE --recode --out $(basename $GENFILE)                                    #create .ped and .map files if these do not exist
+	mv $(basename $GENFILE).log ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).RECODE.PLINK.log 
+	
+	p-link --noweb --file $(basename $GENFILE) --extract $SNPFILE --recode --out SNPstract_$(basename $SNPFILE)    #extract SNPs
+        mv SNPstract_$(basename $SNPFILE).log ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).EXTRACT.PLINK.log
+
+else echo "Ooops, something went wrong..."; exit 1; 
+fi
+
+
+###FORMAT OUTPUT TO INCLUDE ID, SEX AND SNP ALLELES
+
+if [ -f SNPstract_$(basename $SNPFILE).ped ] && [ -f SNPstract_$(basename $SNPFILE).map ] 
+  then echo "OK, extraction successful, reformatting now..."
+
+else echo "Error, extraction NOT successful"; exit 1; 
+fi
+
+#get info from .ped file
+cut -d " " -f 2,5,7- --output-delimiter="," SNPstract_$(basename $SNPFILE).ped > .data.txt
+
+
+readarray -t rsnames <<< "$(cut -f 2 SNPstract_$(basename $SNPFILE).map)"
+
+snpnames=()
+
+for ((i=0; i < ${#rsnames[@]}; i++)); do 
+        snpnames+=("${rsnames[$i]}," "${rsnames[$i]},")
+done
+
+OFS=""
+printf "%s\n" "id,""sex,""${snpnames[*]}" > .hdr.txt
+
+
+###CREATE END-USER FILES AND CLEAN UP
+
+#merge array and write to file
+cat .hdr.txt .data.txt > ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).csv
+
+#remove temporary files
+rm .data.txt
+rm .hdr.txt
+
+rm SNPstract_$(basename $SNPFILE).map
+rm SNPstract_$(basename $SNPFILE).ped
+ 
+#show message whether SNPstract was successful or not
+if [ -f ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).csv ];
+  then echo "SNPstract finished. Find your data in ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).csv in the current directory."; exit 0; 
+
+  else echo "Ooops, something went wrong.."; exit 1; 
+fi
