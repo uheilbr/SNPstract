@@ -1,10 +1,10 @@
 ---
-title: "SNPstract_0.4 Documentation"
+title: "SNPstract_0.5 Documentation"
 author: "Urs Heilbronner"
-date: "January 25th, 2016"
+date: "October 17th 2017"
 output: html_document
 ---
-Version 0.4
+Version 0.5
 
 Email:      urs.heilbronner@med.uni-muenchen.de
 
@@ -35,30 +35,30 @@ Note that in Ubuntu Linux 14.04, the command for PLINK 1.07 is `p-link`. If your
 
 ####3.2 Installation (Terminal)
 
-The easiest way is to create a directory called `SNPstract` in your home folder and to copy SNPstract_0.4 to this folder. The following example assumes that SNPstract_0.4 is in located the `Downloads` folder in your home directory:
+The easiest way is to create a directory called `SNPstract` in your home folder and to copy SNPstract_0.5 to this folder. The following example assumes that SNPstract_0.5 is in located the `Downloads` folder in your home directory:
 
 ```
 cd
 mkdir SNPstract
-cp ~/Downloads/SNPstract_0.4 ~/SNPstract_0.4
+cp ~/Downloads/SNPstract_0.5 ~/SNPstract_0.5
 ```
 
-Make SNPstact_0.4 executable:
+Make SNPstact_0.5 executable:
 
 ```
 cd SNPstract
-chmod +x SNPstract_0.4
+chmod +x SNPstract_0.5
 ```
 
-Now, SNPstract_0.4 can be run by typing `sh ~/SNPstract/SNPstract_0.4` (*see below*).
+Now, SNPstract_0.5 can be run by typing `sh ~/SNPstract/SNPstract_0.5` (*see below*).
 
-Optionally, to be able to run SNPstract_0.4 by simply typing `SNPstract_0.4`, one can add the directory ~/SNPstract to one's path by entering:
+Optionally, to be able to run SNPstract_0.5 by simply typing `SNPstract_0.5`, one can add the directory ~/SNPstract to one's path by entering:
 
 ```
 echo 'export PATH=$PATH:~/SNPstract' >> ~/.profile
 ```
 
-Afterwards, you have to logout and login again for the change to take effect. (The examples below assume that you have added SNPstract_0.4 to your path.)
+Afterwards, you have to logout and login again for the change to take effect. (The examples below assume that you have added SNPstract_0.5 to your path.)
 
 
 ###4. Usage
@@ -67,12 +67,12 @@ Assuming the file containig the SNPs to extract (*see below*) is named `SNPs2ext
 
 ```
 cd ~/stuff
-SNPstract_0.4 SNPs2extract.txt OmniExpress
+SNPstract_0.5 SNPs2extract.txt OmniExpress
 ```
 
-**NB: SNPstract_0.4 will write all output files to the directory from which it is started.**
+**NB: SNPstract_0.5 will write all output files to the directory from which it is started.**
 
-You can also start SNPstract_0.4 by only typing `SNPstract_0.4` (i.e. without input arguments). You will be required to specify both the file containing the SNPs as well as the genotype files when prompted by SNPstract_0.4.
+You can also start SNPstract_0.5 by only typing `SNPstract_0.5` (i.e. without input arguments). You will be required to specify both the file containing the SNPs as well as the genotype files when prompted by SNPstract_0.5.
 
 ####4.1 File paths
 
@@ -82,18 +82,18 @@ If files are located in different folder, the full path to the files (e.g. `/hom
 
 To obtain human readable allele names, SNPs should to be extracted from whole-genome non-binary (.ped/.map) files. SNPstract can use both binary (.bed/.bim/.fam) and non-binary PLINK files as input. If both binary and non-binary files are present (i.e. both OmniExpress.bed/.bim/.fam and OmniExpress.ped/.map exist in the same directory), SNPs will be extracted from the non-binary fileset by default.
 
-If binary files are used, SNPstract includes an additional recoding step (performed by PLINK). The recoded files are not deleted after SNPstract_0.4 has finished the extraction process. A logfile from this optional recoding step is preserved (see *Output files*).
+If binary files are used, SNPstract includes an additional recoding step (performed by PLINK). The recoded files are not deleted after SNPstract_0.5 has finished the extraction process. A logfile from this optional recoding step is preserved (see *Output files*).
 
 ####4.3 Input arguments
 
-As described above, SNPstract_0.4 takes either two or zero input arguments. In the case of two input arguments:
+As described above, SNPstract_0.5 takes either two or zero input arguments. In the case of two input arguments:
 
-* Names of the SNPs to extract must be writtten to a text file (*SNPfile*), one SNP (e.g. rs10774035) per line. This must be the first input argument to SNPstract_0.4.
+* Names of the SNPs to extract must be writtten to a text file (*SNPfile*), one SNP (e.g. rs10774035) per line. This must be the first input argument to SNPstract_0.5.
 
-* The name of genotype files (without extention [.bed/.bim/.fam]; *GENOfiles*). This must be the second input argument to SNPstract_0.4.
+* The name of genotype files (without extention [.bed/.bim/.fam]; *GENOfiles*). This must be the second input argument to SNPstract_0.5.
 
 ####4.4 Output files
-As described above, SNPstract_0.4 will write all output files to the directory from which it is started. After running SNPstract_0.4 successfully, there will be two new files in this directory:
+As described above, SNPstract_0.5 will write all output files to the directory from which it is started. After running SNPstract_0.5 successfully, there will be two new files in this directory:
 
 * A .csv file whose filename contains date, name of the SNPfile and name of the GENOfiles (without extention). This file contains the extracted SNP data.
 
@@ -101,7 +101,7 @@ As described above, SNPstract_0.4 will write all output files to the directory f
 
 * Optionally, if binary PLINK files were recoded to non-binary PLINK files, a log file from the PLINK recoding operation is also included. This filename also contains date, name of the SNPfile, name of the GENOfiles (without extention) and ends with *RECODE.PLINK.log*. The recoded PLINK files are not deleted.
 
-Please note that SNPstract_0.4 deletes the .ped/.map files resulting from the extraction process.
+Please note that SNPstract_0.5 deletes the .ped/.map files resulting from the extraction process.
 
 
 ###5. Disclaimer

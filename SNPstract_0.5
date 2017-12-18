@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #---
-#title: "SNPstract_0.4"
+#title: "SNPstract_0.5"
 #author: "Urs Heilbronner"
-#date: "January 25th, 2016"
+#date: "October 17th, 2017"
 #---
 #Version 0.4
 
@@ -56,15 +56,15 @@ fi
 
 if [ -f $GENFILE.map ] && [ -f $GENFILE.ped ];
   then	echo "Extracting SNPs now..."
-        p-link --file $GENFILE --extract $SNPFILE --recode --out SNPstract_$(basename $SNPFILE)         #extract SNPs if .ped and .map file exist
+        p-link --noweb --file $GENFILE --extract $SNPFILE --recode --out SNPstract_$(basename $SNPFILE)         #extract SNPs if .ped and .map file exist
         mv SNPstract_$(basename $SNPFILE).log ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).EXTRACT.PLINK.log
         
 elif [ -f $GENFILE.bed ] && [ -f $GENFILE.bim ] && [ -f $GENFILE.fam ];                                 
   then	echo "Transforming binary into non-binary files, then extracting SNPs.."                        
-	p-link --bfile $GENFILE --recode --out $(basename $GENFILE)                                    #create .ped and .map files if these do not exist
+	p-link --noweb --bfile $GENFILE --recode --out $(basename $GENFILE)                                    #create .ped and .map files if these do not exist
 	mv $(basename $GENFILE).log ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).RECODE.PLINK.log 
 	
-	p-link --file $(basename $GENFILE) --extract $SNPFILE --recode --out SNPstract_$(basename $SNPFILE)    #extract SNPs
+	p-link --noweb --file $(basename $GENFILE) --extract $SNPFILE --recode --out SNPstract_$(basename $SNPFILE)    #extract SNPs
         mv SNPstract_$(basename $SNPFILE).log ${now}_SNPstract_$(basename $SNPFILE)_$(basename $GENFILE).EXTRACT.PLINK.log
 
 else echo "Ooops, something went wrong..."; exit 1; 
