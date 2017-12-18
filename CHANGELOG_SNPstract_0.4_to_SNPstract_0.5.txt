@@ -1,0 +1,2 @@
+CHANGELOG
+Modified SNPstract so that PLINK is always called with the --noweb option, making it usable on computers without unrestricted internet access.

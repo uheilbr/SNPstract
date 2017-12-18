@@ -11,7 +11,7 @@ Email:      urs.heilbronner@med.uni-muenchen.de
 
 ###1. What is SNPstract?
 
-SNPstract is a simple shell script to extract single nucleotide polymorphism (SNP) data from PLINK v1.07 (http://pngu.mgh.harvard.edu/~purcell/plink/) dataformats (.ped/.map or .bed/.bim/.fam files, *see below*). It works on GNU/Linux operating systems (i.e. not on Microsoft Windows) and requires a working installation of PLINK v1.07 (*see below*).
+SNPstract is a simple shell script to extract single nucleotide polymorphism (SNP) data from PLINK v1.07 (http://zzz.bwh.harvard.edu/plink/) dataformats (.ped/.map or .bed/.bim/.fam files, *see below*). It works on GNU/Linux operating systems (i.e. not on Microsoft Windows) and requires a working installation of PLINK v1.07 (*see below*).
 
 SNPstract extracts SNP data using PLINK and reformats the output as a comma-separated values (.csv) text file in which the alleles of each individual and each SNP of interest are contained. This .csv file can then be easily imported to more user-friendly spreadsheet programs such as Microsoft Excel or LibreOffice Calc. 
 
@@ -29,9 +29,9 @@ I am aware that newer beta versions of PLINK offer a much more flexible approach
 
 ####3.1 Computer environment
 
-This script works on Ubuntu Linux 14.04 with PLINK v1.07 installed. All commands below work on an Ubuntu 14.04 system. 
+This script works on Ubuntu Linux 16.04 with PLINK v1.07 installed. All commands below work on an Ubuntu 16.04 system. 
 
-Note that in Ubuntu Linux 14.04, the command for PLINK 1.07 is `p-link`. If your PLINK command is different, `p-link` has to be replaced by the appropriate command (e.g. `plink`) in the script.
+Note that in Ubuntu Linux 16.04, the command for PLINK 1.07 is `p-link`. If your PLINK command is different, `p-link` has to be replaced by the appropriate command (e.g. `plink`) in the script.
 
 ####3.2 Installation (Terminal)
 
@@ -52,31 +52,22 @@ chmod +x SNPstract_0.5
 
 Now, SNPstract_0.5 can be run by typing `sh ~/SNPstract/SNPstract_0.5` (*see below*).
 
-Optionally, to be able to run SNPstract_0.5 by simply typing `SNPstract_0.5`, one can add the directory ~/SNPstract to one's path by entering:
-
-```
-echo 'export PATH=$PATH:~/SNPstract' >> ~/.profile
-```
-
-Afterwards, you have to logout and login again for the change to take effect. (The examples below assume that you have added SNPstract_0.5 to your path.)
-
-
 ###4. Usage
 
 Assuming the file containig the SNPs to extract (*see below*) is named `SNPs2extract.txt` and the genotype files (*see below*) are called `OmniExpress.bed/.bim/.fam`, all files located in a directory called `stuff`, the command to extract the SNPs is:
 
 ```
 cd ~/stuff
-SNPstract_0.5 SNPs2extract.txt OmniExpress
+sh ~/SNPstract/SNPstract_0.5 SNPs2extract.txt OmniExpress
 ```
 
 **NB: SNPstract_0.5 will write all output files to the directory from which it is started.**
 
-You can also start SNPstract_0.5 by only typing `SNPstract_0.5` (i.e. without input arguments). You will be required to specify both the file containing the SNPs as well as the genotype files when prompted by SNPstract_0.5.
+You can also start SNPstract_0.5 without input arguments. You will be required to specify both the file containing the SNPs as well as the genotype files when prompted by SNPstract_0.5.
 
 ####4.1 File paths
 
-If files are located in different folder, the full path to the files (e.g. `/home/urs/morestuff/SNPs2extract.txt` or `/home/urs/lessstuff/PsychChip`) can be used.   
+If files are located in different folder, the full path to the files (e.g. `/home/urs/morestuff/SNPs2extract.txt` or `/home/urs/lessstuff/PsychChip`) can be used.
 
 ####4.2 Types of PLINK (.bed/.bim/.fam or .ped/.map) files
 
